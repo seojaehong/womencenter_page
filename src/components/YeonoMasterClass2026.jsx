@@ -11,7 +11,8 @@ import {
 } from 'lucide-react';
 
 // 구글 폼 URL - 실제 URL로 교체하세요
-const GOOGLE_FORM_URL = "https://forms.gle/J6wSHfNojBQvsAQV9";
+const GOOGLE_FORM_URL = "https://forms.gle/ZoYnbbLbM5mkwcBd7";
+
 
 const YeonoMasterClass2026 = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
