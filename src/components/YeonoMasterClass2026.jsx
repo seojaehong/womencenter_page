@@ -18,7 +18,7 @@ import {
 
 const GOOGLE_FORM_URL = "https://forms.gle/ZoYnbbLbM5mkwcBd7";
 const YEONO_HOMEPAGE_URL = "https://yeono.org/";
-const CONTACT_EMAIL = "yeonocenter@naver.com";
+const CONTACT_EMAIL = "yeono@yeono.org";
 
 const YeonoMasterClass2026 = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
