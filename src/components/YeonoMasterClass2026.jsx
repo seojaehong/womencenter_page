@@ -9,48 +9,69 @@ import {
   Menu,
   X,
   Mail,
-  ExternalLink
+  ExternalLink,
+  Check,
+  Copy,
+  Send // 아이콘 추가
 } from 'lucide-react';
 
-// 설정 상수
 const GOOGLE_FORM_URL = "https://forms.gle/ZoYnbbLbM5mkwcBd7";
 const YEONO_HOMEPAGE_URL = "https://yeono.org/";
-const CONTACT_EMAIL = "yeonocenter@naver.com"; // 실제 이메일로 변경 필요
+const CONTACT_EMAIL = "yeono@yeono.org";
 
 const YeonoMasterClass2026 = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
+  // 모달 상태 관리
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
 
   const scrollToSection = (id) => {
+    // ... (기존 코드와 동일) ...
     const element = document.getElementById(id);
     if (element) {
       const headerOffset = 80;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-      
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
+      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
     }
     setIsMenuOpen(false);
   };
 
   const openGoogleForm = () => window.open(GOOGLE_FORM_URL, '_blank');
   const openHomepage = () => window.open(YEONO_HOMEPAGE_URL, '_blank');
-  
-  // 문의하기: 메일 클라이언트 열기
-  const handleContact = () => {
+
+  // 문의하기 버튼 클릭 시 모달 오픈
+  const handleContactOpen = () => {
+    setIsContactModalOpen(true);
+    setIsCopied(false); // 초기화
+    setIsMenuOpen(false); // 모바일 메뉴 닫기
+  };
+
+  // 주소 복사 로직
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(CONTACT_EMAIL);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000); // 2초 후 복귀
+    } catch (err) {
+      console.error('복사 실패:', err);
+    }
+  };
+
+  // 메일 앱 열기 로직
+  const handleMailTo = () => {
     window.location.href = `mailto:${CONTACT_EMAIL}`;
   };
 
   return (
     <div className="min-h-screen bg-slate-50 font-[Pretendard] text-slate-800 selection:bg-purple-200 selection:text-purple-900">
       
-      {/* Navigation - 가독성 개선 (배경 불투명도 증가) */}
+      {/* Navigation */}
       <nav className="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/60 shadow-sm transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* Logo Area */}
+            {/* ... Logo Area (기존과 동일) ... */}
             <div className="flex-shrink-0 flex items-center cursor-pointer group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
               <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center mr-2 shadow-lg shadow-purple-500/20 group-hover:bg-purple-700 transition-colors">
                 <span className="text-white font-bold text-lg">Y</span>
@@ -59,7 +80,7 @@ const YeonoMasterClass2026 = () => {
               <span className="ml-2 text-sm font-semibold text-slate-500 border-l border-slate-300 pl-2">교육기획위원회</span>
             </div>
 
-            {/* Desktop Menu */}
+            {/* Desktop Menu - handleContactOpen 연결 */}
             <div className="hidden md:flex space-x-1 items-center">
               <button onClick={() => scrollToSection('about')} className="px-3 py-2 text-sm font-semibold text-slate-600 hover:text-purple-700 hover:bg-slate-100 rounded-lg transition-all">시리즈 소개</button>
               <button onClick={() => scrollToSection('vol1')} className="px-3 py-2 text-sm font-semibold text-slate-600 hover:text-purple-700 hover:bg-slate-100 rounded-lg transition-all">Vol.1 건설업</button>
@@ -70,7 +91,7 @@ const YeonoMasterClass2026 = () => {
               <button onClick={openHomepage} className="px-3 py-2 text-sm font-semibold text-slate-500 hover:text-purple-700 transition-colors flex items-center gap-1">
                 홈페이지 <ExternalLink size={14} />
               </button>
-              <button onClick={handleContact} className="px-3 py-2 text-sm font-semibold text-slate-500 hover:text-purple-700 transition-colors flex items-center gap-1">
+              <button onClick={handleContactOpen} className="px-3 py-2 text-sm font-semibold text-slate-500 hover:text-purple-700 transition-colors flex items-center gap-1">
                 문의하기 <Mail size={14} />
               </button>
 
@@ -84,7 +105,7 @@ const YeonoMasterClass2026 = () => {
               </div>
             </div>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Button (기존과 동일) */}
             <div className="md:hidden flex items-center">
               <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-slate-600 hover:text-purple-700 p-2">
                 {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -93,7 +114,7 @@ const YeonoMasterClass2026 = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu - handleContactOpen 연결 */}
         {isMenuOpen && (
           <div className="md:hidden bg-white border-t border-slate-100 shadow-xl absolute w-full z-50">
             <div className="px-4 pt-2 pb-6 space-y-1">
@@ -102,17 +123,21 @@ const YeonoMasterClass2026 = () => {
               <button onClick={() => scrollToSection('roadmap')} className="block w-full text-left px-4 py-3 text-base font-semibold text-slate-600 hover:bg-slate-50 rounded-lg">연간 로드맵</button>
               <div className="border-t border-slate-100 my-2"></div>
               <button onClick={openHomepage} className="block w-full text-left px-4 py-3 text-base font-semibold text-slate-500 hover:bg-slate-50 rounded-lg flex items-center gap-2"><ExternalLink size={16}/> 홈페이지</button>
-              <button onClick={handleContact} className="block w-full text-left px-4 py-3 text-base font-semibold text-slate-500 hover:bg-slate-50 rounded-lg flex items-center gap-2"><Mail size={16}/> 문의하기</button>
+              <button onClick={handleContactOpen} className="block w-full text-left px-4 py-3 text-base font-semibold text-slate-500 hover:bg-slate-50 rounded-lg flex items-center gap-2"><Mail size={16}/> 문의하기</button>
               <button onClick={openGoogleForm} className="w-full mt-4 bg-purple-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-purple-200">수강 신청하기</button>
             </div>
           </div>
         )}
       </nav>
 
-      {/* Hero Section - 텍스트 가독성 최우선 */}
+      {/* ... Hero, About, Vol1, Roadmap Section (기존 코드 유지) ... */}
+      
+      {/* (Hero Section 등 중간 내용은 변경 없이 그대로 두시면 됩니다) */}
+      
+      {/* Hero Section */}
       <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        {/* ... (생략: 기존 코드와 동일) ... */}
         <div className="absolute inset-0 bg-gradient-to-b from-purple-50 via-white to-slate-50 -z-10"></div>
-        {/* 장식용 블러 요소 (투명도 조절로 텍스트 간섭 최소화) */}
         <div className="absolute top-20 right-0 w-[600px] h-[600px] bg-purple-200/20 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-teal-200/20 rounded-full blur-[100px] pointer-events-none"></div>
 
@@ -148,14 +173,14 @@ const YeonoMasterClass2026 = () => {
         </div>
       </section>
 
-      {/* About Section - 카드 디자인 개선 */}
+      {/* About Section */}
       <section id="about" className="py-24 bg-white relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* ... (생략: 기존 코드와 동일) ... */}
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">사각지대 없는 실무, 여노가 채웁니다</h2>
             <p className="text-lg text-slate-600">어렵고 복잡해서 피했던 영역이 오히려 기회가 됩니다.</p>
           </div>
-
           <div className="grid md:grid-cols-3 gap-8">
             {[
               { 
@@ -189,11 +214,11 @@ const YeonoMasterClass2026 = () => {
         </div>
       </section>
 
-      {/* Vol.1 Spotlight - 다크 모드 컨셉 유지하되 가독성 강화 */}
+      {/* Vol.1 Spotlight */}
       <section id="vol1" className="py-24 bg-slate-900 relative overflow-hidden">
+        {/* ... (생략: 기존 코드와 동일) ... */}
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-teal-500/10 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none"></div>
-
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col lg:flex-row items-center gap-16">
             <div className="lg:w-1/2">
@@ -209,7 +234,6 @@ const YeonoMasterClass2026 = () => {
                 일용직과 노무제공자 관리의 핵심을 꿰뚫습니다.
                 이 강의 하나로 4대 보험 신고의 흐름이 보입니다.
               </p>
-
               <div className="space-y-6 mb-12">
                 {[
                   { title: "건설업 구조 이해", desc: "본사 vs 현장 분리 적용의 이유와 실무적용" },
@@ -225,15 +249,10 @@ const YeonoMasterClass2026 = () => {
                   </div>
                 ))}
               </div>
-
-              <button
-                onClick={openGoogleForm}
-                className="w-full sm:w-auto bg-teal-500 hover:bg-teal-400 text-slate-900 font-bold py-4 px-10 rounded-2xl transition-all duration-300 shadow-lg shadow-teal-500/20 flex items-center justify-center gap-2"
-              >
+              <button onClick={openGoogleForm} className="w-full sm:w-auto bg-teal-500 hover:bg-teal-400 text-slate-900 font-bold py-4 px-10 rounded-2xl transition-all duration-300 shadow-lg shadow-teal-500/20 flex items-center justify-center gap-2">
                 Vol.1 수강신청 바로가기 <ArrowRight className="w-5 h-5"/>
               </button>
             </div>
-
             <div className="lg:w-1/2 w-full">
               <div className="bg-slate-800/50 backdrop-blur-xl rounded-3xl p-8 border border-slate-700/50 shadow-2xl">
                 <div className="flex items-center justify-between mb-8 pb-6 border-b border-slate-700">
@@ -247,7 +266,6 @@ const YeonoMasterClass2026 = () => {
                     <span className="text-white font-bold text-lg">2026. 03. OO (토)</span>
                   </div>
                 </div>
-
                 <div className="space-y-4">
                   <div className="bg-slate-700/50 p-5 rounded-2xl border border-slate-600/50">
                     <span className="text-teal-400 text-xs font-bold block mb-2">Part 1</span>
@@ -271,18 +289,16 @@ const YeonoMasterClass2026 = () => {
         </div>
       </section>
 
-      {/* Roadmap Section - 깔끔한 타임라인 */}
+      {/* Roadmap Section */}
       <section id="roadmap" className="py-24 bg-slate-50 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* ... (생략: 기존 코드와 동일) ... */}
           <div className="text-center mb-20">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">2026 전문가 역량 강화 로드맵</h2>
             <p className="text-lg text-slate-600">올해 여노와 함께라면 이 모든 것을 마스터할 수 있습니다.</p>
           </div>
-
           <div className="relative">
-            {/* Center Line */}
             <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-slate-200 rounded-full"></div>
-
             <div className="space-y-16">
               {[
                 {
@@ -319,20 +335,14 @@ const YeonoMasterClass2026 = () => {
                 }
               ].map((item, index) => (
                 <div key={item.id} className={`relative flex flex-col lg:flex-row items-center lg:justify-between group ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
-                  
-                  {/* Text Content */}
                   <div className={`lg:w-5/12 p-6 ${index % 2 === 0 ? 'lg:text-right' : 'lg:text-left'} text-center lg:text-left`}>
                     <span className={`inline-block px-3 py-1 bg-${item.color}-100 text-${item.color}-700 text-xs font-bold rounded-lg mb-3`}>{item.track}</span>
                     <h3 className="text-2xl font-bold text-slate-900 mb-3">{item.title}</h3>
                     <p className="text-slate-600 font-medium">{item.desc}</p>
                   </div>
-
-                  {/* Marker */}
                   <div className={`absolute left-1/2 transform -translate-x-1/2 w-12 h-12 bg-white rounded-full border-4 border-${item.color}-500 shadow-lg z-10 flex items-center justify-center mb-6 lg:mb-0 hidden lg:flex`}>
                     <span className={`text-${item.color}-600 font-bold`}>{item.id}</span>
                   </div>
-
-                  {/* Details Card */}
                   <div className="lg:w-5/12 w-full p-6 bg-white rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
                     <ul className="space-y-3">
                       {item.details.map((detail, idx) => (
@@ -350,7 +360,7 @@ const YeonoMasterClass2026 = () => {
         </div>
       </section>
 
-      {/* Footer - 정보 접근성 강화 */}
+      {/* Footer - handleContactOpen 연결 */}
       <footer className="bg-white border-t border-slate-200 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
@@ -363,13 +373,66 @@ const YeonoMasterClass2026 = () => {
               <button onClick={openHomepage} className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-sm font-bold transition-colors">
                 공식 홈페이지
               </button>
-              <button onClick={handleContact} className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-sm font-bold transition-colors">
+              <button onClick={handleContactOpen} className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-sm font-bold transition-colors">
                 교육 문의하기
               </button>
             </div>
           </div>
         </div>
       </footer>
+
+      {/* ▼▼▼ BIG TECH STYLE CONTACT MODAL ▼▼▼ */}
+      {isContactModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onClick={() => setIsContactModalOpen(false)}></div>
+          
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md relative z-10 overflow-hidden animate-fade-in-up">
+            <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-6 text-center">
+              <div className="mx-auto w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mb-3">
+                <Mail className="text-white" size={24} />
+              </div>
+              <h3 className="text-xl font-bold text-white">무엇을 도와드릴까요?</h3>
+              <p className="text-purple-100 text-sm mt-1">교육 관련 문의사항을 남겨주세요.</p>
+            </div>
+            
+            <div className="p-6 space-y-4">
+              {/* 이메일 주소 표시 */}
+              <div className="bg-slate-50 border border-slate-100 rounded-xl p-4 text-center">
+                <p className="text-sm text-slate-500 mb-1">공식 이메일</p>
+                <p className="text-lg font-bold text-slate-800 font-mono tracking-wide">{CONTACT_EMAIL}</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                {/* 1. 주소 복사 버튼 */}
+                <button 
+                  onClick={handleCopy}
+                  className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-200 ${isCopied ? 'border-teal-500 bg-teal-50 text-teal-700' : 'border-slate-100 hover:border-purple-200 hover:bg-purple-50'}`}
+                >
+                  {isCopied ? <Check size={24} className="mb-2" /> : <Copy size={24} className="mb-2 text-slate-400" />}
+                  <span className="font-bold text-sm">{isCopied ? '복사 완료!' : '주소 복사'}</span>
+                </button>
+
+                {/* 2. 메일 앱 열기 버튼 */}
+                <button 
+                  onClick={handleMailTo}
+                  className="flex flex-col items-center justify-center p-4 rounded-xl border-2 border-slate-100 hover:border-purple-200 hover:bg-purple-50 transition-all duration-200"
+                >
+                  <Send size={24} className="mb-2 text-slate-400" />
+                  <span className="font-bold text-sm text-slate-700">메일 보내기</span>
+                </button>
+              </div>
+              
+              <button 
+                onClick={() => setIsContactModalOpen(false)}
+                className="w-full py-3 text-slate-400 text-sm font-medium hover:text-slate-600 transition-colors"
+              >
+                닫기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
