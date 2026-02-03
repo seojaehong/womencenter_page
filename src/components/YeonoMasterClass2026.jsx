@@ -424,7 +424,7 @@ const YeonoMasterClass2026 = () => {
               
               <div className="relative py-2">
                 <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-100"></div></div>
-                <div className="relative flex justify-czenter text-xs"><span className="bg-white px-2 text-slate-400">자주 쓰는 웹메일로 바로 쓰기</span></div>
+                <div className="relative flex justify-czenter text-xs"><span className="bg-white px-2 text-slate-400">이메일로 문의하기</span></div>
               </div>
 
               {/* 2. 웹메일 바로가기 (네이버 / 지메일) */}
