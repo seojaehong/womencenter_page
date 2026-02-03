@@ -12,7 +12,8 @@ import {
   ExternalLink,
   Check,
   Copy,
-  Send // 아이콘 추가
+  Send,
+  AppWindow // 웹메일 아이콘용
 } from 'lucide-react';
 
 const GOOGLE_FORM_URL = "https://forms.gle/ZoYnbbLbM5mkwcBd7";
@@ -22,12 +23,11 @@ const CONTACT_EMAIL = "yeonocenter@naver.com";
 const YeonoMasterClass2026 = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
-  // 모달 상태 관리
+  // 모달 및 복사 상태 관리
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
 
   const scrollToSection = (id) => {
-    // ... (기존 코드와 동일) ...
     const element = document.getElementById(id);
     if (element) {
       const headerOffset = 80;
@@ -41,27 +41,37 @@ const YeonoMasterClass2026 = () => {
   const openGoogleForm = () => window.open(GOOGLE_FORM_URL, '_blank');
   const openHomepage = () => window.open(YEONO_HOMEPAGE_URL, '_blank');
 
-  // 문의하기 버튼 클릭 시 모달 오픈
+  // 문의하기 모달 열기
   const handleContactOpen = () => {
     setIsContactModalOpen(true);
-    setIsCopied(false); // 초기화
-    setIsMenuOpen(false); // 모바일 메뉴 닫기
+    setIsCopied(false);
+    setIsMenuOpen(false);
   };
 
-  // 주소 복사 로직
+  // 1. 주소 복사
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(CONTACT_EMAIL);
       setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000); // 2초 후 복귀
+      setTimeout(() => setIsCopied(false), 2000);
     } catch (err) {
       console.error('복사 실패:', err);
     }
   };
 
-  // 메일 앱 열기 로직
+  // 2. 기본 메일 앱 열기 (Outlook, Mac Mail, Mobile)
   const handleMailTo = () => {
     window.location.href = `mailto:${CONTACT_EMAIL}`;
+  };
+
+  // 3. 네이버 메일 쓰기 창 바로 열기
+  const handleNaverMail = () => {
+    window.open(`https://mail.naver.com/write/popup?to=${CONTACT_EMAIL}`, '_blank');
+  };
+
+  // 4. 지메일(Gmail) 쓰기 창 바로 열기
+  const handleGmail = () => {
+    window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${CONTACT_EMAIL}`, '_blank');
   };
 
   return (
@@ -71,7 +81,6 @@ const YeonoMasterClass2026 = () => {
       <nav className="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/60 shadow-sm transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* ... Logo Area (기존과 동일) ... */}
             <div className="flex-shrink-0 flex items-center cursor-pointer group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
               <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center mr-2 shadow-lg shadow-purple-500/20 group-hover:bg-purple-700 transition-colors">
                 <span className="text-white font-bold text-lg">Y</span>
@@ -80,7 +89,7 @@ const YeonoMasterClass2026 = () => {
               <span className="ml-2 text-sm font-semibold text-slate-500 border-l border-slate-300 pl-2">교육기획위원회</span>
             </div>
 
-            {/* Desktop Menu - handleContactOpen 연결 */}
+            {/* Desktop Menu */}
             <div className="hidden md:flex space-x-1 items-center">
               <button onClick={() => scrollToSection('about')} className="px-3 py-2 text-sm font-semibold text-slate-600 hover:text-purple-700 hover:bg-slate-100 rounded-lg transition-all">시리즈 소개</button>
               <button onClick={() => scrollToSection('vol1')} className="px-3 py-2 text-sm font-semibold text-slate-600 hover:text-purple-700 hover:bg-slate-100 rounded-lg transition-all">Vol.1 건설업</button>
@@ -105,7 +114,7 @@ const YeonoMasterClass2026 = () => {
               </div>
             </div>
 
-            {/* Mobile Menu Button (기존과 동일) */}
+            {/* Mobile Menu Button */}
             <div className="md:hidden flex items-center">
               <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-slate-600 hover:text-purple-700 p-2">
                 {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -114,7 +123,7 @@ const YeonoMasterClass2026 = () => {
           </div>
         </div>
 
-        {/* Mobile Menu - handleContactOpen 연결 */}
+        {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden bg-white border-t border-slate-100 shadow-xl absolute w-full z-50">
             <div className="px-4 pt-2 pb-6 space-y-1">
@@ -130,13 +139,8 @@ const YeonoMasterClass2026 = () => {
         )}
       </nav>
 
-      {/* ... Hero, About, Vol1, Roadmap Section (기존 코드 유지) ... */}
-      
-      {/* (Hero Section 등 중간 내용은 변경 없이 그대로 두시면 됩니다) */}
-      
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        {/* ... (생략: 기존 코드와 동일) ... */}
         <div className="absolute inset-0 bg-gradient-to-b from-purple-50 via-white to-slate-50 -z-10"></div>
         <div className="absolute top-20 right-0 w-[600px] h-[600px] bg-purple-200/20 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-teal-200/20 rounded-full blur-[100px] pointer-events-none"></div>
@@ -176,7 +180,6 @@ const YeonoMasterClass2026 = () => {
       {/* About Section */}
       <section id="about" className="py-24 bg-white relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* ... (생략: 기존 코드와 동일) ... */}
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">사각지대 없는 실무, 여노가 채웁니다</h2>
             <p className="text-lg text-slate-600">어렵고 복잡해서 피했던 영역이 오히려 기회가 됩니다.</p>
@@ -216,7 +219,6 @@ const YeonoMasterClass2026 = () => {
 
       {/* Vol.1 Spotlight */}
       <section id="vol1" className="py-24 bg-slate-900 relative overflow-hidden">
-        {/* ... (생략: 기존 코드와 동일) ... */}
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-teal-500/10 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -292,7 +294,6 @@ const YeonoMasterClass2026 = () => {
       {/* Roadmap Section */}
       <section id="roadmap" className="py-24 bg-slate-50 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* ... (생략: 기존 코드와 동일) ... */}
           <div className="text-center mb-20">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">2026 전문가 역량 강화 로드맵</h2>
             <p className="text-lg text-slate-600">올해 여노와 함께라면 이 모든 것을 마스터할 수 있습니다.</p>
@@ -360,7 +361,7 @@ const YeonoMasterClass2026 = () => {
         </div>
       </section>
 
-      {/* Footer - handleContactOpen 연결 */}
+      {/* Footer */}
       <footer className="bg-white border-t border-slate-200 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
@@ -402,8 +403,8 @@ const YeonoMasterClass2026 = () => {
                 <p className="text-lg font-bold text-slate-800 font-mono tracking-wide">{CONTACT_EMAIL}</p>
               </div>
 
+              {/* 1. 주소 복사 & 기본 앱 */}
               <div className="grid grid-cols-2 gap-3">
-                {/* 1. 주소 복사 버튼 */}
                 <button 
                   onClick={handleCopy}
                   className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-200 ${isCopied ? 'border-teal-500 bg-teal-50 text-teal-700' : 'border-slate-100 hover:border-purple-200 hover:bg-purple-50'}`}
@@ -412,16 +413,36 @@ const YeonoMasterClass2026 = () => {
                   <span className="font-bold text-sm">{isCopied ? '복사 완료!' : '주소 복사'}</span>
                 </button>
 
-                {/* 2. 메일 앱 열기 버튼 */}
                 <button 
                   onClick={handleMailTo}
                   className="flex flex-col items-center justify-center p-4 rounded-xl border-2 border-slate-100 hover:border-purple-200 hover:bg-purple-50 transition-all duration-200"
                 >
                   <Send size={24} className="mb-2 text-slate-400" />
-                  <span className="font-bold text-sm text-slate-700">메일 보내기</span>
+                  <span className="font-bold text-sm text-slate-700">메일 앱 열기</span>
                 </button>
               </div>
               
+              <div className="relative py-2">
+                <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-100"></div></div>
+                <div className="relative flex justify-czenter text-xs"><span className="bg-white px-2 text-slate-400">자주 쓰는 웹메일로 바로 쓰기</span></div>
+              </div>
+
+              {/* 2. 웹메일 바로가기 (네이버 / 지메일) */}
+              <div className="grid grid-cols-2 gap-3">
+                <button 
+                  onClick={handleNaverMail}
+                  className="flex items-center justify-center gap-2 p-3 rounded-xl bg-[#03C75A]/10 text-[#03C75A] hover:bg-[#03C75A]/20 transition-colors font-bold text-sm"
+                >
+                  <AppWindow size={16} /> 네이버 메일
+                </button>
+                <button 
+                  onClick={handleGmail}
+                  className="flex items-center justify-center gap-2 p-3 rounded-xl bg-[#EA4335]/10 text-[#EA4335] hover:bg-[#EA4335]/20 transition-colors font-bold text-sm"
+                >
+                  <AppWindow size={16} /> Gmail
+                </button>
+              </div>
+
               <button 
                 onClick={() => setIsContactModalOpen(false)}
                 className="w-full py-3 text-slate-400 text-sm font-medium hover:text-slate-600 transition-colors"
