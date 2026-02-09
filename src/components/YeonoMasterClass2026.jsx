@@ -229,17 +229,17 @@ const YeonoMasterClass2026 = () => {
               </div>
               <h2 className="text-4xl lg:text-5xl font-bold mb-6 leading-tight text-white">
                 Vol.1 건설업과 4대보험<br />
-                <span className="text-slate-400">가장 복잡한 신고 완전 정복</span>
+                <span className="text-slate-400">가장 복잡한 신고 기초 파악</span>
               </h2>
               <p className="text-slate-300 text-lg mb-10 leading-relaxed font-medium">
-                건설 현장의 숨은 조력자인 여성 실무자들의 고민을 해결하고,
+                건설 현장의 숨은 조력자인 실무자들의 고민을 해결하고,
                 일용직과 노무제공자 관리의 핵심을 꿰뚫습니다.
                 이 강의 하나로 4대 보험 신고의 흐름이 보입니다.
               </p>
               <div className="space-y-6 mb-12">
                 {[
                   { title: "건설업 구조 이해", desc: "본사 vs 현장 분리 적용의 이유와 실무적용" },
-                  { title: "고난도 신고 실무", desc: "보수총액신고, 근로내용확인신고, 확정정산 대응" },
+                  { title: "고난도 신고 실무의 기초", desc: "보수총액신고, 근로내용확인신고, 확정정산 대응" },
                   { title: "사각지대 없는 상담", desc: "일용직·노무제공자(특고) 권리 구제 포인트" }
                 ].map((item, i) => (
                   <div key={i} className="flex items-start">
