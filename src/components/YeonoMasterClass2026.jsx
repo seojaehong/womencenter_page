@@ -265,7 +265,7 @@ const YeonoMasterClass2026 = () => {
                   </div>
                   <div className="text-right">
                     <span className="text-slate-400 text-sm block mb-1">일시</span>
-                    <span className="text-white font-bold text-lg">2026. 03. OO (토)</span>
+                    <span className="text-white font-bold text-lg">2026. 3. 14. (토) 13:00 - 16:00 </span>
                   </div>
                 </div>
                 <div className="space-y-4">
