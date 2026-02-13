@@ -320,7 +320,7 @@ const YeonoMasterClass2026 = () => {
                 },
                 {
                   id: 3,
-                  track: "Track 1 · 8월",
+                  track: "Track 3 · 8월",
                   color: "indigo",
                   title: "성평등임금공시제의 입법적 쟁점",
                   desc: "정보접근권과 입증책임 배분을 통한 성별 임금격차 시정의 입법적 과제 ",
@@ -328,7 +328,7 @@ const YeonoMasterClass2026 = () => {
                 },
                 {
                   id: 4,
-                  track: "Track 3 · 10월 (Main)",
+                  track: "Track 4 · 10월 (Main)",
                   color: "slate",
                   title: "괴롭힘·성희롱 조사 심의 전문가",
                   desc: "단순 법리를 넘어 사실확정과 심의위원회 운영까지, 여노의 노하우가 집약된 핵심 과정",
